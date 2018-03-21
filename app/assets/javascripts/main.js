@@ -22,7 +22,7 @@ $(function(){
 		    crossDomain: true,
 		    dataType: "JSON" ,
 		    type: "GET",
-		    headers: { 'Access-Control-Allow-Credentials': true, 'Access-Control-Allow-Origin':'http://localhost:3000'}
+		    headers: { 'Access-Control-Allow-Credentials': true, 'Access-Control-Allow-Origin':'https://filmsterapps.herokuapp.com/'}
 		  	
 		  	
  		  })
