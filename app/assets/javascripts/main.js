@@ -17,7 +17,7 @@ $(function(){
 		let id = $(e.target).data('id');
 
 		  $.ajax({
-		  	url: 'http://api.themoviedb.org/3/search/movie/' + id + '?',
+		  	url: 'https://api.themoviedb.org/3/search/movie/' + id + '?',
 		  	data: { "api_key": "03a0b4b21f01e148a7cc40f3e013cb08" },
 		    crossDomain: true,
 		    dataType: "JSON" ,
@@ -29,7 +29,7 @@ $(function(){
  		  .done(function(data){
  		  	//displaymovies(data);
  		  	console.log("i m here")
- 		  	
+
  		  })
 		  
 
