@@ -1,0 +1,151 @@
+<div class="container">
+<h1 class="text-center"><%= @user.email %></h1>
+
+<p class="text-center lead"><%= @user.introduction %></p>
+<div id="follow_button" class="text-center">
+  <%= render partial: 'follow', locals: {user: @user} %>
+</div>
+<ul class="text-center user-stats">
+  <li id="reviews-count" class="btn">
+    <div class="number-label " >Reviews</div>
+    <div class="number-value "><%= @user.reviews.count %></div>
+  </li>
+  <li id="user-followers" class="btn">
+    <div class="number-label">Followers</div>
+    <% if current_user.following?(@user) %>
+      <% if @relation.status == "accept" %>
+    <div class="number-value"><%= @user.followed_relationships.count %></div>
+      <% else %>
+
+      <div class="number-value"><%= @user.followed_relationships.count-1 %></div>
+    <% end %> 
+    <%  else %>
+       <div class="number-value"><%= @user.followed_relationships.count %></div>
+    <% end %>
+   
+      
+  </li> 
+  <li id="user-following" class="btn">
+    <div class="number-label">Followings</div>
+    <div class="number-value"><%= @user.following_relationships.count %></div>
+  </li>
+</ul>
+
+</ul>
+<% if @user != current_user %>
+<% if current_user.following?(@user)%>
+
+<% if @relation.status == "accept" %>
+<div id="movies" class="transitions-enabled">
+<% @movies.each do |movie| %>
+ 	<% if @user.reviewed?(movie) %>
+ 	<%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster}" %>
+ 	<% end %>
+ 	<% end %>
+ </div> 
+ <% else %>
+ <div id="movies" class="transitions-enabled" style="display:none;">
+ </div>
+ <% end %>
+ <% end %>
+ <% else %>
+ <div id="movies" class="transitions-enabled">
+<% @movies.each do |movie| %>
+  <% if @user.reviewed?(movie) %>
+  <%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster}" %>
+  <% end %>
+  <% end %>
+ </div> 
+ <% end %>
+ </div>	
+
+ <script type="text/javascript">
+   $(function(){
+    let userdata = {};
+    user_id = <%= @user.id %>
+    $.ajax({
+        url:  `/users/${user_id}.json`,
+        type: "GET"
+    })
+    .done(function(data){
+      userdata = data;
+      console.log(userdata);
+    });
+    
+    $('#user-followers').on('click' , function(e){
+      getfollower();
+    });
+    $('#user-following').on('click' , function(e){
+      getfollowing();
+    });
+    $('#reviews-count').on('click' , function(e){
+      getreviews();
+    })
+    function getfollower()
+    {
+      let container= $('#movies');
+      let htmlstring = "";
+      
+      if(userdata["followed_relationships"].length > 0)
+      {
+         userdata["followed_relationships"].forEach(function(users){
+          htmlstring += `<div class='panel panel-default'><div class="panel-body">
+              <p class="text-center">${users["user"]["email"]}</p>
+          </div>
+        </div>`
+        });
+        
+      }
+      else
+      { 
+        htmlstring = "<div> There is no follower </div>";
+      }
+      container.empty();
+      container.append(htmlstring);
+    }
+    function getfollowing(){
+      let container= $('#movies');
+      let htmlstring = "";
+      if(userdata.following_relationships.length > 0)
+      {
+        userdata.following_relationships.forEach(function(users){
+          htmlstring += `<div class="panel panel-default">
+          <div class="panel-body">
+            <p class="text-center">${users.user.email}</p>
+          </div>
+          </div>`
+        })
+      }
+      else
+      {
+        htmlstring = "<div> You haven't followed anybody </div>";
+      }
+      container.empty();
+      container.append(htmlstring);
+    }
+     function getreviews(){
+      let container = $('#movies');
+      let htmlstring = "";
+      if(userdata["reviews"].length > 0)
+      {
+        userdata["reviews"].forEach(function(review){
+          htmlstring += `<div class="panel panel-default">
+          <div class="panel-body">
+            <img src="https://image.tmdb.org/t/p/w154/${review.movie.poster}" %>
+            <p>${review["movie"]["title"]}</p>
+            <p>${review["movie"]["release_date"]}</p>
+
+          </div>
+          </div>`
+        });
+      }
+      else
+      {
+        htmlstring = "<div>You haven't reviewd any movies yet</div>";
+      }
+      container.empty();
+      container.append(htmlstring);
+     }
+   })
+ </script>
+

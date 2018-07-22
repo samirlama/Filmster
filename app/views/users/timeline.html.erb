@@ -1,0 +1,37 @@
+<h1 class="text-center">Timeline</h1>
+
+<div id="timeline-reviews">
+</div>
+
+<script type="text/javascript">
+  // we will implement this later
+  $(function(){
+  	$.ajax({
+  		url: `/timeline.json`,
+  		type: "GET"
+  	})
+  	.done(function(data){
+  		get_review(data);
+  		console.log(data);
+  	})
+
+  	 function get_review(data){
+  	 	let container = $("#timeline-reviews");
+  	 	let htmlstring = "";
+  	 	data.reviews.forEach(function(review){
+  	 		htmlstring += `<div class="panel panel-default">
+          <div class="panel-body">
+            <img src="https://image.tmdb.org/t/p/w154/${review.movie.poster}" %>
+            <p>${review["movie"]["title"]}</p>
+            <p>${review["comment"]}</p>
+            <p>${review.user}</p>
+
+          </div>
+          </div>`
+  	 	});
+  	 	
+  	 	container.append(htmlstring);
+  	 }
+
+  });
+</script>

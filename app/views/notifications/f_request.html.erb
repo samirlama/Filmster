@@ -1,0 +1,11 @@
+<% @notifications.each do |n| %>
+
+	<h5><%= n.follower.username %></h5>
+	<%= link_to 'Accept' , user_relationship_path(user_id:n.follower.id  , id: current_user.id , status: "accept") , method: :patch %>
+	<%= link_to 'Reject' , user_relationship_path(user_id:n.follower.id  , id: current_user.id, status: "reject") , method: :patch %> 
+<% end %>
+ <% @notifications_alert.each do |n| %>
+ 	<% if n.follower == current_user %>
+ 	<%= n.followed.email  %> <span>has accepted your friend request </span>
+ 	<% end %>
+ <% end %>	

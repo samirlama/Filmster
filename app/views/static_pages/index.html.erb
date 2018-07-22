@@ -1,1 +1,38 @@
-<h1>My name is sameer</h1>
+<div class="container">
+<div class="row">
+  <div class="col-xs-12 col-md-4">
+    <h1 >Find Movies</h1>
+
+    <div class="row">
+      <form id="movie-search">
+        <div class="col-xs-8">
+          <input type="text" name="query" class="form-control" placeholder="Enter Movie Name">
+        </div>
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <div class="col-xs-12 col-md-8">
+    <div id="movies">
+       
+    </div>
+     
+
+
+    </div>
+  </div>
+  <div class="row" style="position: absolute; bottom:-20px; ">
+    <h2>Recent Reviewed </h2>
+    
+    <% @recent_reviews.each do |review| %>
+      <p><%= review.comment %></p>
+      <p><%= link_to review.movie.title , movie_path(review.movie.id) %></p>
+      <p>-<%= link_to review.user.username , user_path(review.user.id) %></p>
+     <% end %>
+    </div>
+   </div>   
+  </div>
+  </div>

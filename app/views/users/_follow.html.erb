@@ -1,0 +1,19 @@
+
+<% if user!= current_user %>
+<% if current_user.following?(user) %>
+<% if @relation.status == "pending" %>
+<%= link_to 'Cancel Request' , user_relationship_path(user_id: user.id , id: current_user.following_relationships.find_by(followed_id: user.id))  , method: :delete %>
+<% else %>
+<%= link_to 'Unfollow' , user_relationship_path(user_id: user.id , id: current_user.following_relationships.find_by(followed_id: user.id)), class: 'btn unfollow-button text-center' ,  method: :delete  %>
+<% end %>
+<% else %>
+<%= link_to 'Follow' , user_relationships_path(user.id) , class: 'btn follow-button text-center', method: :post %>
+<% end %>
+<% end %>
+
+
+
+
+
+
+

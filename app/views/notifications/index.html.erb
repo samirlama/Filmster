@@ -1,0 +1,10 @@
+
+ <% @notification_review_like.each do |n| %>
+ 		<% if n.voter != current_user %>
+ 		<p><%= n.voter.username %> likes your review </p>
+ 		<p><%= time_frame(DateTime.now.to_i,n.created_at.to_i) %></p>
+ 		
+ 		<% end %>
+ 	
+ <% end %>		
+ 

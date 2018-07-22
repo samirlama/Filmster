@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+	<div class="container">
+       <%= image_tag "https://image.tmdb.org/t/p/original/#{@movie.poster}" %>
+        <p><%= @movie.title %><br></p>
+      <p><%= @movie.plot %><br></p>
+      <p><%= @movie.release_date %></p>
+      <p><%= @movie.released %></p>
+      <p><%= @movie.runtime %></p>
+      <p><%= @movie.popularity %></p>
+      # @movie.genre = @fetched_movie.genres.col }
+     <p><%=  @movie.genre %></p>
+      <p><%= @movie.language %></p>
+      <p><%= @movie.budget %></p>
+      <p><%= @movie.average_vote %></p>
+      <p><%= @movie.vote_count %></p>
+     
+      <p><%= @movie.homepage %></p>
+      <p><%= @movie.tmdb_id %></p>
+      <p><%= @movie.imdb_id %></p>
+      <style>
+.checked {
+    color: orange;
+}
+</style>
+</head>
+<body>
+
+<h2>Star Rating</h2>
+
+ <%= link_to '<span class="fa fa-star" id="star1" onclick="add(this,1)"></span>'.html_safe , movie_ratings_path(movie_id: @movie.id , rate_number: 1), method: :post %>
+  <span class="fa fa-star" id="star2" onclick="add(this,2)"></span>
+  <span class="fa fa-star" id="star3" onclick="add(this,3)"></span>
+  <span class="fa fa-star" id="star4" onclick="add(this,4)"></span>
+  <span class="fa fa-star" id="star5" onclick="add(this,5)"></span>
+
+<script>
+function add(ths,sno){
+
+
+for (var i=1;i<=5;i++){
+var cur=document.getElementById("star"+i)
+cur.className="fa fa-star"
+}
+
+for (var i=1;i<=sno;i++){
+var cur=document.getElementById("star"+i)
+if(cur.className=="fa fa-star")
+{
+cur.className="fa fa-star checked"
+}
+}
+
+}
+</script>
+      <h3>Reviews</h3>
+      <% if current_user.reviewed?(@movie) %>
+      <% @reviews.each do |review| %>
+            <p><%= link_to review.user.email , user_path(review.user.id) %></p><%= review.comment %>
+                 <span id="like_review_<%= review.id %>">
+                        <%= render partial: 'like' , locals: {review: review} %>
+                   </span>     
+                  
+       <% end %>    
+       <% else %>
+       <p>no reviews has been made yet</p>
+       <% end %> 
+</div>
+</body>
+</html>
+ 
+  
